@@ -1,0 +1,43 @@
+# ============================================================
+# News Briefing Service — SE Layer Dependencies
+# ============================================================
+# Install with:
+#   pip install -r requirements.txt
+#
+# For the AI layer (numpy, pydantic, provider SDKs):
+#   pip install -r requirements-ai.txt
+#
+# All versions are pinned. Do NOT remove version pins (rubric requirement).
+# ============================================================
+
+# --- Core (already in requirements-ai.txt, repeated for clarity) -----------
+numpy>=1.24,<3.0
+pydantic>=2.7,<3.0
+
+# --- Configuration ----------------------------------------------------------
+pydantic-settings>=2.2.0,<3.0      # reads .env into typed Settings class
+
+# --- Async HTTP (fetch service) ---------------------------------------------
+aiohttp>=3.9.0,<4.0                # async HTTP client for RSS + HTML fetching
+
+# --- Feed & HTML parsing ----------------------------------------------------
+feedparser>=6.0.0,<7.0             # RSS / Atom feed parser
+beautifulsoup4>=4.12.0,<5.0        # HTML scraping
+lxml>=5.0.0,<6.0                   # fast HTML/XML parser backend for BS4
+
+# --- Retry / rate-limiting --------------------------------------------------
+tenacity>=8.2.0,<9.0               # exponential backoff retry decorator
+
+# --- Database (asyncpg for async PostgreSQL) --------------------------------
+asyncpg>=0.29.0,<1.0               # async PostgreSQL driver
+
+# --- CLI --------------------------------------------------------------------
+click>=8.1.0,<9.0                  # CLI framework used in src/cli.py
+
+# --- Testing ----------------------------------------------------------------
+pytest>=8.0.0,<9.0
+pytest-asyncio>=0.23.0,<1.0        # async test support
+pytest-cov>=5.0.0,<6.0             # coverage reporting
+
+# --- Type checking (run locally, not in prod) --------------------------------
+mypy>=1.10.0,<2.0

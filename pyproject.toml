@@ -1,0 +1,15 @@
+[tool.pytest.ini_options]
+# pytest-asyncio: auto mode so @pytest.mark.asyncio is inferred automatically
+asyncio_mode = "auto"
+# Add project root to sys.path so `src` and `ai` packages are importable
+pythonpath = ["."]
+testpaths = ["tests"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "venv/*"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = false
+ignore_missing_imports = true
