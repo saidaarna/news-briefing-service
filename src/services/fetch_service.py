@@ -170,14 +170,16 @@ def _parse_rss_entries(feed_text: str, source_name: str) -> list[Article]:
 
 
 def load_rss_sources(feeds_file: str | Path) -> list[Source]:
-    """Read the RSS feeds file and return a list of Source objects.
+    """Read the sources file and return a list of Source objects.
+
+    Supports either a single URL (defaults to kind='rss') or the format:
+    `url | kind | name` (e.g. `https://oxu.az | html | Oxu.az`)
 
     Lines starting with '#' and blank lines are ignored.
-    The source name is derived from the URL's hostname.
     """
     path = Path(feeds_file)
     if not path.exists():
-        logger.warning("RSS feeds file not found: %s", path)
+        logger.warning("Sources file not found: %s", path)
         return []
 
     sources: list[Source] = []
@@ -185,10 +187,18 @@ def load_rss_sources(feeds_file: str | Path) -> list[Source]:
         line = line.strip()
         if not line or line.startswith("#"):
             continue
-        hostname = urlparse(line).hostname or line
-        sources.append(Source(name=hostname, url=line, kind="rss"))
+        
+        if "|" in line:
+            parts = [p.strip() for p in line.split("|")]
+            url = parts[0]
+            kind = parts[1] if len(parts) > 1 else "rss"
+            name = parts[2] if len(parts) > 2 else (urlparse(url).hostname or url)
+            sources.append(Source(name=name, url=url, kind=kind))
+        else:
+            hostname = urlparse(line).hostname or line
+            sources.append(Source(name=hostname, url=line, kind="rss"))
 
-    logger.debug("Loaded %d RSS sources from %s", len(sources), path)
+    logger.debug("Loaded %d sources from %s", len(sources), path)
     return sources
 
 
