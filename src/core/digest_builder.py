@@ -1,0 +1,58 @@
+import os
+import logging
+from datetime import datetime
+from src.models import UserProfile, ProcessedArticle
+
+logger = logging.getLogger(__name__)
+
+
+class DigestBuilder:
+    def create_markdown(self, processed: list[ProcessedArticle], user_profile: UserProfile) -> str:
+        """
+        Takes AI-processed articles, filters them according to user preferences,
+        generates a personalized news briefing in Markdown format, and saves it to disk.
+        """
+        filtered_articles = []
+
+        for p in processed:
+            # 1. Filter: Check if the source is excluded by the user
+            if p.article.source in user_profile.excluded_sources:
+                logger.info(f"Article '{p.article.title}' skipped. Source '{p.article.source}' is excluded.")
+                continue
+
+            # 2. Filter: Check if the article topic matches user's preferred topics (Topic Enum)
+            if p.labeled.topic not in user_profile.preferred_topics:
+                logger.info(f"Article '{p.article.title}' skipped. Topic '{p.labeled.topic}' is not preferred.")
+                continue
+
+            filtered_articles.append(p)
+
+        # Get current date for the header and filename
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        content = f"# Daily News Briefing - {date_str}\n"
+        content += f"User: {user_profile.username}\n\n"
+
+        # Build markdown content based on filtering results
+        if not filtered_articles:
+            content += "*No articles available matching your profile preferences for today.*\n"
+        else:
+            for p in filtered_articles:
+                content += f"## {p.article.title}\n"
+                content += f"- **Source:** {p.article.source}\n"
+                content += f"- **Topic:** {p.labeled.topic} | **Sentiment:** {p.labeled.sentiment}\n"
+                content += f"- **Summary:** {p.labeled.summary}\n"  # Using AI summary instead of raw content
+                content += f"- [Read Original Article]({p.article.url})\n\n"
+
+        # Safe file I/O operations to persist the generated digest
+        try:
+            os.makedirs("digests", exist_ok=True)
+            filename = f"digests/{date_str}-{user_profile.username}.md"
+
+            with open(filename, "w", encoding="utf-8") as f:
+                f.write(content)
+
+            logger.info(f"Digest successfully created at {filename}")
+            return filename
+        except IOError as e:
+            logger.error(f"Failed to write markdown digest file: {str(e)}")
+            raise e

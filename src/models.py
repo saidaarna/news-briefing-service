@@ -145,4 +145,3 @@ class ProcessedArticle(BaseModel):
     labeled: LabeledSummary
     content_hash: str = Field(..., description="SHA-256 of normalized body text")
     processed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-
