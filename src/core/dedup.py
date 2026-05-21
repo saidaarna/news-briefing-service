@@ -2,11 +2,7 @@ import logging
 
 from ai import Article, url_canonicalize, content_hash, near_duplicate
 
-# ── Temporary settings shim ───────────────────────────────────────────────────
-# TODO: Replace with "from config import settings" when Nəzrin's config is merged.
-from types import SimpleNamespace
-settings = SimpleNamespace(near_duplicate_threshold=0.7)
-# ─────────────────────────────────────────────────────────────────────────────
+from src.config import settings
 
 log = logging.getLogger(__name__)
 
@@ -37,7 +33,7 @@ def deduplicate(
         Deduplicated list of Article objects (same objects, not copies).
     """
     threshold = (
-        threshold if threshold is not None else settings.near_duplicate_threshold
+        threshold if threshold is not None else settings.dedup_near_duplicate_threshold
     )
 
     # ── Stage 1: URL canonicalization + body hash ──────────────────────────────

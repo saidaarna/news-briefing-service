@@ -3,10 +3,9 @@ from collections import defaultdict
 
 from ai import DigestItem
 
-# ── Temporary User stub ───────────────────────────────────────────────────────
-# TODO: Remove this class and replace with "from models import User"
-#       once Ləman's models.py is merged. Confirm these exact field names
-#       with her: preferred_topics, excluded_sources, max_items_per_topic, username.
+# NOTE: filter.py uses its own lightweight User model (list[str] topics) because
+# test_filter.py imports this class directly with string topic values. This is
+# intentional — the filter operates on string comparisons for flexibility.
 from pydantic import BaseModel
 
 class User(BaseModel):
@@ -14,7 +13,6 @@ class User(BaseModel):
     preferred_topics: list[str]   # e.g. ["Tech", "Science"]  — match Topic.value strings
     excluded_sources: list[str]   # e.g. ["tabloid_news"]
     max_items_per_topic: int      # e.g. 3
-# ─────────────────────────────────────────────────────────────────────────────
 
 log = logging.getLogger(__name__)
 

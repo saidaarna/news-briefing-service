@@ -13,18 +13,7 @@ from tenacity import (
 from ai import Article, LabeledSummary, summarize_and_label
 from ai.providers.base import ProviderError
 
-# ── Temporary settings shim ───────────────────────────────────────────────────
-# TODO: Replace these two lines with "from config import settings"
-#       once Nəzrin's config.py is merged into main.
-from types import SimpleNamespace
-settings = SimpleNamespace(
-    llm_concurrency=5,
-    llm_max_retries=4,
-    llm_retry_backoff_base=1.0,
-    llm_timeout_seconds=30,
-    cache_dir=".cache/newsbrief",
-)
-# ─────────────────────────────────────────────────────────────────────────────
+from src.config import settings
 
 log = logging.getLogger(__name__)
 
@@ -44,7 +33,7 @@ class AIService:
     ) -> None:
         self._sem = llm_semaphore or asyncio.Semaphore(settings.llm_concurrency)
         # Cache lives at  .cache/newsbrief/labeled/<sha256>.json
-        self._cache_dir = (cache_dir or Path(settings.cache_dir)) / "labeled"
+        self._cache_dir = (cache_dir or Path(settings.ai_cache_dir)) / "labeled"
         self._cache_dir.mkdir(parents=True, exist_ok=True)
 
     async def label(self, article: Article) -> LabeledSummary:

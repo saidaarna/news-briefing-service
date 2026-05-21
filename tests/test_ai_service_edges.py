@@ -32,7 +32,7 @@ async def test_timeout_raises_error(tmp_path, sample_article, monkeypatch):
     # Set timeout to 10ms so we can trigger it instantly in tests
     monkeypatch.setattr("src.services.ai_service.settings.llm_timeout_seconds", 0.01)
 
-    async def forever(_article):
+    async def forever(*args, **kwargs):
         await asyncio.sleep(10)   # 10 seconds — way longer than 0.01s limit
         return None
 
