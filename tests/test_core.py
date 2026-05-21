@@ -8,6 +8,7 @@ from src.core.digest_builder import DigestBuilder
 
 
 def test_content_cache_operations():
+    """Verifies that the ContentCache correctly stores, retrieves, and handles missing hash lookups."""
     cache = ContentCache()
     assert cache.get("non_existent_hash") is None
 
@@ -17,8 +18,14 @@ def test_content_cache_operations():
 
 
 def test_digest_builder_filtering():
+    """Validates that DigestBuilder properly filters out excluded sources and builds the file."""
     builder = DigestBuilder()
-    profile = UserProfile(username="laman", preferred_topics=[Topic.TECH], excluded_sources=["BadSource"])
+    profile = UserProfile(
+        username="laman",
+        preferred_topics=[Topic.TECH],
+        excluded_sources=["BadSource"],
+        max_items_per_topic=5
+    )
 
     # Create valid raw articles
     art1 = Article(title="Good News", url="http://ok.com", content="Raw content 1", source="GoodSource")
@@ -38,6 +45,12 @@ def test_digest_builder_filtering():
         )
     ]
 
-    with patch("os.makedirs"), patch("builtins.open", mock_open()):
+    with patch("os.makedirs"), patch("builtins.open", mock_open()) as mocked_file:
         filename = builder.create_markdown(articles, profile)
+
+        # Verify that a filename was generated successfully
         assert filename is not None
+        assert "laman" in filename
+
+        # Verify that file write operation was triggered
+        mocked_file.assert_called_once()
