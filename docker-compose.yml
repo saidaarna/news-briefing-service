@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://newsbrief:newsbrief_pass@db:5432/newsbrief
+      - LLM_PROVIDER=${LLM_PROVIDER:-gemini}
+      - LLM_MODEL=${LLM_MODEL:-gemini-3.5-flash}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-gemini}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-text-embedding-004}
+    volumes:
+      - ./digests:/app/digests
+      - ./.cache:/app/.cache
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=newsbrief
+      - POSTGRES_PASSWORD=newsbrief_pass
+      - POSTGRES_DB=newsbrief
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U newsbrief -d newsbrief"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
