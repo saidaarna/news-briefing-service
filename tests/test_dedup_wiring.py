@@ -32,8 +32,8 @@ def test_stage2_drops_paraphrase():
     Stage 1 cannot catch this: the URLs are different and the body hash is different.
     Stage 2 computes Jaccard similarity and drops the near-duplicate.
     """
-    body1 = "The president signed the new climate bill on Monday morning in Washington."
-    body2 = "On Monday morning, the president signed the climate bill in Washington DC."
+    body1 = "The president signed the new climate bill on Monday morning in Washington. The bill aims to reduce emissions by forty percent over the next decade."
+    body2 = "The president signed the new climate bill on Monday morning in Washington. The bill aims to reduce emissions by 40% over the next decade."
 
     a = _article("https://outlet-a.com/story/1", body1, source="OutletA")
     b = _article("https://outlet-b.com/story/1", body2, source="OutletB")
@@ -47,8 +47,8 @@ def test_threshold_too_high_keeps_both():
     """At threshold=0.99, almost nothing is considered a duplicate.
     Both articles should survive even if they are paraphrases of each other.
     """
-    body1 = "The president signed the new climate bill on Monday morning."
-    body2 = "On Monday morning, the president signed the climate bill."
+    body1 = "The president signed the new climate bill on Monday morning in Washington. The bill aims to reduce emissions by forty percent over the next decade."
+    body2 = "The president signed the new climate bill on Monday morning in Washington. The bill aims to reduce emissions by 40% over the next decade."
 
     a = _article("https://A.com/1", body1, "A")
     b = _article("https://B.com/1", body2, "B")
