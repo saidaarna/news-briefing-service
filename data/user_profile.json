@@ -1,6 +1,44 @@
-{
-  "user": "khagani",
-  "preferred_topics": ["Tech", "Science", "World"],
-  "excluded_sources": ["sponsored.example.com"],
-  "max_items_per_topic": 3
-}
+[
+  {
+    "username": "saida",
+    "preferred_topics": [
+      "Tech",
+      "Science"
+    ],
+    "excluded_sources": [],
+    "max_items_per_topic": 5
+  },
+  {
+    "username": "laman",
+    "preferred_topics": [
+      "Business",
+      "Politics"
+    ],
+    "excluded_sources": [
+      "tabloid_news"
+    ],
+    "max_items_per_topic": 4
+  },
+  {
+    "username": "nazrin",
+    "preferred_topics": [
+      "Tech",
+      "Business"
+    ],
+    "excluded_sources": [
+      "clickbait.com"
+    ],
+    "max_items_per_topic": 5
+  },
+  {
+    "username": "nigar",
+    "preferred_topics": [
+      "Science",
+      "Politics"
+    ],
+    "excluded_sources": [
+      "low_quality_source"
+    ],
+    "max_items_per_topic": 4
+  }
+]

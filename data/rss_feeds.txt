@@ -12,12 +12,13 @@ https://feeds.arstechnica.com/arstechnica/index/
 https://azertag.az/rss | rss | AZERTAC (AZ)
 https://az.trend.az/feeds/index.rss | rss | Trend News Agency (AZ)
 https://apa.az/rss | rss | APA News Agency (AZ)
-https://news.day.az/rss | rss | Day.az (AZ)
 
 # --- Popular Azerbaijani Sources (HTML Scrape) ---
 # Note: Satisfies the requirement: "At least one source must be direct-scraped HTML"
 https://oxu.az | html | Oxu.az (AZ)
-https://milli.az | html | Milli.az (AZ)
+https://news.milli.az | html | Milli.az (AZ)
+https://report.az/son-xeberler | html | Report.az (AZ)
 
 # --- English HTML Scrape ---
 https://news.ycombinator.com | html | HackerNews (EN)
+
