@@ -18,22 +18,31 @@ def main() -> None:
     args = parser.parse_args()
 
     if args.command == "run-daily":
-        _run_daily(args.user)
+        asyncio.run(_run_daily(args.user))
 
-def _run_daily(username: str) -> None:
-    # Import here so tests can monkeypatch before import
+async def _run_daily(username: str) -> None:
     from src.concurrency.pipeline import run_pipeline
+    from src.storage.repository import PostgresUserRepository
+    import asyncpg
+    
+    # 1. Connect to DB and fetch the user profile
+    try:
+        conn = await asyncpg.connect(settings.database_url)
+        repo = PostgresUserRepository(conn)
+        
+        # Ensures table exists and seeds 'khagani'
+        await repo.initialize_db()
+        
+        user = await repo.get_user_profile(username)
+        await conn.close()
+    except Exception as e:
+        logging.getLogger(__name__).error("Database connection failed: %s", e)
+        print(f"Error connecting to DB: {e}. Ensure PostgreSQL is running.")
+        return
 
-    # When Ləman's DB is ready, replace this with real repo call
-    from src.models import UserProfile, Topic
-    user = UserProfile(
-        username=username,
-        preferred_topics=[Topic.Tech, Topic.Science],
-        excluded_sources=[],
-    )
-
+    # 2. Run pipeline
     fetch_svc = FetchService(settings)
-    digest_path = asyncio.run(run_pipeline(user, fetch_svc))
+    digest_path = await run_pipeline(user, fetch_svc)
     print(f"Digest written: {digest_path}")
 
 if __name__ == "__main__":

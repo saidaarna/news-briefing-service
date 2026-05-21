@@ -16,4 +16,4 @@
     COPY . .
     RUN useradd --create-home appuser && chown -R appuser /app
     USER appuser
-    CMD ["python", "-m", "newsbrief", "run-daily", "--user", "khagani"]
+    CMD ["python", "-m", "src", "run-daily", "--user", "khagani"]

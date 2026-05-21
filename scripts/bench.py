@@ -28,7 +28,6 @@ def main():
     from src.config import settings
     from src.services.fetch_service import FetchService, load_rss_sources
 
-    svc = FetchService(settings)
     sources = load_rss_sources(settings.rss_feeds_file)
 
     if not sources:
@@ -41,11 +40,11 @@ def main():
         print(f"Run {i+1}/{RUNS}...", end=" ", flush=True)
 
         t0 = time.perf_counter()
-        asyncio.run(run_sequential(svc, sources))
+        asyncio.run(run_sequential(FetchService(settings), sources))
         seq_times.append(time.perf_counter() - t0)
 
         t0 = time.perf_counter()
-        asyncio.run(run_concurrent(svc))
+        asyncio.run(run_concurrent(FetchService(settings)))
         con_times.append(time.perf_counter() - t0)
 
         print("done")
