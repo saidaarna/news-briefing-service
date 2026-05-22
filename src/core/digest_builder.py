@@ -26,8 +26,9 @@ class DigestBuilder:
                 logger.info(f"Article '{p.article.title}' skipped. Source '{p.article.source}' is excluded.")
                 continue
 
-            # 2. Filter: Check if the article topic matches user's preferred topics (Topic Enum)
-            if p.labeled.topic not in user_profile.preferred_topics:
+            # 2. Filter: Check if the article topic matches user's preferred topics (Topic Enum).
+            # An empty preferred_topics list means "no filter — accept all topics" (consistent with filter.py).
+            if user_profile.preferred_topics and p.labeled.topic not in user_profile.preferred_topics:
                 logger.info(f"Article '{p.article.title}' skipped. Topic '{p.labeled.topic}' is not preferred.")
                 continue
 

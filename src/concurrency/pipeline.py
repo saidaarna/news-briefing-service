@@ -61,8 +61,21 @@ async def run_pipeline(
 
     # ── 4. AI label ────────────────────────────────────────────────────────────
     ai_svc = AIService()
+
+    # Use a semaphore to cap concurrent in-flight AI calls.
+    # Groq free tier: 30 req/min → 1 req per 2s is safe.
+    ai_concurrency = max(1, min(getattr(settings, "ai_semaphore_limit", 3), 3))
+    semaphore = asyncio.Semaphore(ai_concurrency)
+
+    async def _label_with_throttle(article):
+        async with semaphore:
+            result = await ai_svc.label(article)
+            # Brief pause to respect Groq free-tier limit (30 req/min)
+            await asyncio.sleep(2)
+            return result
+
     label_results = await asyncio.gather(
-        *[ai_svc.label(a) for a in new_articles],
+        *[_label_with_throttle(a) for a in new_articles],
         return_exceptions=True,
     )
 

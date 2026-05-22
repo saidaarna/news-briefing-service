@@ -31,6 +31,10 @@ tenacity>=8.2.0,<9.0               # exponential backoff retry decorator
 # --- Database (asyncpg for async PostgreSQL) --------------------------------
 asyncpg>=0.29.0,<1.0               # async PostgreSQL driver
 
+# --- AI / LLM providers -------------------------------------------------------
+google-genai>=0.3.0,<3.0           # Google Gemini SDK (embeddings)
+openai>=1.30.0,<2.0                # OpenAI-compatible client (used for Groq)
+
 # --- CLI --------------------------------------------------------------------
 click>=8.1.0,<9.0                  # CLI framework used in src/cli.py
 

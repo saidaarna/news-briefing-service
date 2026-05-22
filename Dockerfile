@@ -3,9 +3,9 @@
     WORKDIR /build
     RUN python -m venv /opt/venv
     ENV PATH="/opt/venv/bin:$PATH"
-    COPY requirements.txt .
-    RUN pip install --no-cache-dir -r requirements.txt
-    
+    COPY requirements.txt requirements-ai.txt ./
+    RUN pip install --no-cache-dir -r requirements.txt -r requirements-ai.txt
+
     # ---- Runtime stage ----
     FROM python:3.12-slim
     COPY --from=builder /opt/venv /opt/venv
@@ -16,4 +16,4 @@
     COPY . .
     RUN useradd --create-home appuser && chown -R appuser /app
     USER appuser
-    CMD ["python", "-m", "src", "run-daily", "--user", "khagani"]
+    CMD ["python", "-m", "src", "run-daily", "--user", "saida"]

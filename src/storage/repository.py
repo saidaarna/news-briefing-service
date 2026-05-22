@@ -38,10 +38,15 @@ class PostgresUserRepository(BaseUserRepository):
             """
             await self.db_connection.execute(create_table_query)
 
-            # Keep valid topics to prevent Pydantic validation errors during startup
+            # Seed all team users from data/user_profile.json
             seed_query = """
             INSERT INTO users (username, preferred_topics, excluded_sources)
-            VALUES ('khagani', '["Tech", "Science"]', '["FakeNews.com"]')
+            VALUES
+                ('saida',  '["Tech", "Science"]',          '[]'),
+                ('laman',  '["Business", "Politics"]',     '["tabloid_news"]'),
+                ('nazrin', '["Tech", "Business"]',         '["clickbait.com"]'),
+                ('nigar',  '["Science", "Politics"]',      '["low_quality_source"]'),
+                ('khagani','["Tech", "Science"]',          '["FakeNews.com"]')
             ON CONFLICT (username) DO NOTHING;
             """
             await self.db_connection.execute(seed_query)

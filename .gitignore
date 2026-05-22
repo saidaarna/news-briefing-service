@@ -37,3 +37,4 @@ build/
 
 # Azerbaijani Pipeline Document (user choice)
 PIPELINE_AZ.md
+.cache/
