@@ -36,8 +36,9 @@ async def _run_daily(username: str) -> None:
         user = await repo.get_user_profile(username)
         await conn.close()
     except Exception as e:
-        logging.getLogger(__name__).error("Database connection failed: %s", e)
-        print(f"Error connecting to DB: {e}. Ensure PostgreSQL is running.")
+        logging.getLogger(__name__).error(
+            "Database connection failed: %s — ensure PostgreSQL is running.", e
+        )
         return
 
     # 2. Run pipeline

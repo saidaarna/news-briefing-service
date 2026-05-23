@@ -1,6 +1,7 @@
 import os
 import logging
 from datetime import datetime
+from typing import Any
 from src.models import UserProfile, ProcessedArticle
 
 logger = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ class DigestBuilder:
         generates a personalized news briefing in Markdown format, and saves it to disk.
         """
         filtered_articles = []
-        topic_counts = {}
+        topic_counts: dict[Any, int] = {}
 
         # Get user specific configurations
         max_items = getattr(user_profile, "max_items_per_topic", 5)

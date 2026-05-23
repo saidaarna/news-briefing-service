@@ -80,10 +80,14 @@ async def run_pipeline(
     )
 
     # ── 5. Build ProcessedArticle list and update cache ────────────────────────
+    from ai.schemas import LabeledSummary as _LabeledSummary
     processed: list[ProcessedArticle] = []
     for article, result in zip(new_articles, label_results):
-        if isinstance(result, Exception):
+        if isinstance(result, BaseException):
             logger.warning("ai_label_failed url=%s error=%s", article.url, result)
+            continue
+        if not isinstance(result, _LabeledSummary):
+            logger.warning("ai_label_unexpected_type url=%s type=%s", article.url, type(result))
             continue
         content_hash_val = compute_content_hash(article.content)
         pa = ProcessedArticle(

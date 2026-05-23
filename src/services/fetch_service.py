@@ -139,11 +139,9 @@ def _parse_rss_entries(feed_text: str, source_name: str) -> list[Article]:
             published_at: Optional[datetime] = None
             if entry.get("published_parsed"):
                 try:
-                    import time as _time
-
                     published_at = datetime(
-                        *entry.published_parsed[:6], tzinfo=timezone.utc
-                    )
+                        *entry.published_parsed[:6]
+                    ).replace(tzinfo=timezone.utc)
                 except Exception:
                     pass
 
