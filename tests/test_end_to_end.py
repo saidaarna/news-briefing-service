@@ -54,15 +54,18 @@ def _make_user(preferred_topics: list[str] | None = None) -> UserProfile:
 @pytest.mark.asyncio
 async def test_run_pipeline_happy_path(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     """Full pipeline produces a Markdown digest file with no external calls."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
+    monkeypatch.chdir(tmp_path)
+
+    from src.config import get_settings
+    get_settings.cache_clear()
+
     articles = [
         _make_article("AI Breakthrough", "TechCrunch"),
         _make_article("Space Discovery", "ScienceDaily"),
     ]
     labeled = _make_labeled("Tech")
-
-    # Patch the digests directory so we don't pollute the real one
-    monkeypatch.setenv("DIGESTS_DIR", str(tmp_path))
-    monkeypatch.chdir(tmp_path)
 
     # Mock FetchService.fetch_all to return our articles
     mock_fetch_svc = MagicMock()
@@ -101,7 +104,12 @@ async def test_run_pipeline_all_sources_fail_produces_empty_digest(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """When every source fails, the pipeline still produces a digest (graceful degradation)."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.chdir(tmp_path)
+
+    from src.config import get_settings
+    get_settings.cache_clear()
 
     mock_fetch_svc = MagicMock()
     mock_fetch_svc.fetch_all = AsyncMock(return_value=[
@@ -136,7 +144,12 @@ async def test_run_pipeline_ai_failure_skips_article(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch
 ) -> None:
     """An AI labeling failure for one article does not abort the whole pipeline."""
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "test-key")
+    monkeypatch.setenv("OPENAI_API_KEY", "test-key")
     monkeypatch.chdir(tmp_path)
+
+    from src.config import get_settings
+    get_settings.cache_clear()
     articles = [_make_article("Good Article"), _make_article("Bad Article")]
 
     mock_fetch_svc = MagicMock()
