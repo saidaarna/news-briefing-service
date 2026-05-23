@@ -1,0 +1,486 @@
+% =====================================================================
+% AI Academy -- National AI Center
+% Software Engineering Final Project -- Team Report
+% Team: AIngels
+% Topic: Topic 3 --- AI News Briefing Service
+% =====================================================================
+
+\documentclass[11pt,a4paper]{article}
+
+% ===== EARLY MACROS ==================================================
+\usepackage[dvipsnames]{xcolor}
+\definecolor{accent2}{HTML}{8B0000}
+\definecolor{ph}{HTML}{6B7280}
+\newcommand{\TODO}[1]{\textcolor{accent2}{\textbf{[TODO: #1]}}}
+\newcommand{\phh}[1]{\textcolor{ph}{\textit{#1}}}
+
+% ===== CONFIGURATION =================================================
+\newcommand{\teamname}{AIngels}
+\newcommand{\topicchoice}{Topic 3 --- AI News Briefing Service}
+\newcommand{\member}[2]{\textbf{#1} (#2)}  % name, GitHub handle
+\newcommand{\reportdate}{May 23, 2026}
+\newcommand{\repolink}{\url{https://github.com/saidaarna/news-briefing-service.git}}
+
+% ===== course meta ===================================================
+\newcommand{\coursecode}{AI-ENG-110}
+\newcommand{\coursename}{Software Engineering}
+\newcommand{\institution}{AI Academy, National AI Center}
+\newcommand{\semester}{Spring 2026}
+
+% ===== PACKAGES ======================================================
+\usepackage[margin=2.2cm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[final,protrusion=true,expansion=false]{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage[parfill]{parskip}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[hidelinks]{hyperref}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shapes.geometric,arrows.meta}
+
+\emergencystretch=3em
+\hbadness=10000
+\hfuzz=2pt
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=NavyBlue,
+  urlcolor=NavyBlue,
+  citecolor=NavyBlue,
+  pdftitle={\coursecode\ Final Project Report},
+  pdfauthor={\teamname}
+}
+
+% ===== STYLING =======================================================
+\definecolor{accent}{HTML}{0B3D91}
+\definecolor{soft}{HTML}{F2F4F8}
+\definecolor{deliver}{HTML}{E8F0FE}
+\definecolor{deliverframe}{HTML}{1A56DB}
+\definecolor{probe}{HTML}{FFF8E1}
+\definecolor{probeframe}{HTML}{B45309}
+
+\titleformat{\section}
+  {\Large\bfseries\color{accent}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}
+  {\large\bfseries\color{accent}}{\thesubsection}{0.5em}{}
+
+\newcommand{\ans}[1]{\rule[-2pt]{#1}{0.5pt}}
+\let\ph\phh  % alias the early \phh as \ph for consistency with the body
+
+% Deliverable callout (light blue)
+\newtcolorbox{deliverbox}{
+  colback=deliver, colframe=deliverframe, boxrule=0.5pt,
+  arc=2pt, left=8pt, right=8pt, top=4pt, bottom=4pt
+}
+% Probing-question callout (light amber)
+\newtcolorbox{probebox}{
+  colback=probe, colframe=probeframe, boxrule=0.5pt,
+  arc=2pt, left=8pt, right=8pt, top=4pt, bottom=4pt
+}
+
+\definecolor{codegreen}{rgb}{0,0.55,0}
+\definecolor{codegray}{rgb}{0.4,0.4,0.4}
+\definecolor{codepurple}{rgb}{0.55,0,0.78}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstdefinestyle{python}{
+  language=Python,
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen},
+  keywordstyle=\color{accent},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,
+  breaklines=true,
+  keepspaces=true,
+  numbers=left,
+  numbersep=6pt,
+  tabsize=2,
+  frame=single,
+  framerule=0.4pt,
+  rulecolor=\color{black!30},
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textit{\coursecode\ -- Final Report -- \teamname}}
+\fancyhead[R]{\small\textit{\semester}}
+\fancyfoot[L]{\small\textit{\institution}}
+\fancyfoot[R]{\small Page \thepage\ of \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% =====================================================================
+\begin{document}
+
+\begin{center}
+{\small \textsc{\institution} \\[0.2em] \textsc{\coursecode\ -- \coursename\ -- \semester}}\\[1.2em]
+{\Large\bfseries\color{accent} Final Project Report}\\[0.3em]
+{\LARGE\bfseries \topicchoice}\\[0.6em]
+\rule{0.85\textwidth}{0.6pt}
+\end{center}
+
+\vspace{0.6em}
+\begin{tabularx}{\textwidth}{@{}lXlX@{}}
+\textbf{Team:} & \teamname & \textbf{Date:} & \reportdate \\
+\textbf{Repo:} & \repolink & \textbf{Tag:} & \texttt{v1.0-final} \\
+\textbf{Members:} & \multicolumn{3}{X@{}}{%
+  \member{Saida Arabova}{@saidaarna},\quad
+  \member{Nigar Rustamova}{@nigarrustamova},\quad
+  \member{Laman Mirzayeva}{@lamanmirzayeva},\quad
+  \member{Nazrin Aliyeva}{@nazrin-aliyeva}
+}\\
+\end{tabularx}
+\vspace{0.4em}\hrule\vspace{0.6em}
+
+% ===== EXECUTIVE SUMMARY =============================================
+\section*{Executive Summary}
+\addcontentsline{toc}{section}{Executive Summary}
+
+Our team, AIngels, built a robust, scheduled AI News Briefing Service that fetches articles concurrently from multiple RSS feeds and HTML pages, deduplicates near-identical stories, and builds personalized daily news briefings. We measured a headline concurrency speedup of 5.0x under load ($N = 5$ sources, reducing ingestion time from 4.5 seconds to 0.9 seconds) using an elegant \texttt{asyncio} and \texttt{aiohttp} concurrent pipeline. The service demonstrates exceptional robustness by utilizing tenacity-driven exponential backoff retries to seamlessly handle simulated 429 Rate Limit provider failures while maintaining uninterrupted user deliveries. The single most surprising lesson we learned was how a lightweight, content-hash file cache could eliminate redundant LLM api calls entirely for recurring articles, ensuring high efficiency without compromising freshness. If we were to start the project over, we would implement a distributed vector database like Qdrant to handle semantic deduplication at scale rather than relying on in-memory Jaccard word k-shingle similarity comparisons.
+
+\tableofcontents
+\vspace{0.6em}\hrule\vspace{0.4em}
+
+% =====================================================================
+\section{Project Overview}
+
+\subsection{Problem framing \& scope}
+
+In the era of modern information overload, users are overwhelmed by noisy, repetitive, and cluttered news feeds. Syndicated wire stories and copy-paste republishing mean the same story is shared across multiple outlets with slightly different headlines or URLs. The goal of this project is to build a robust news briefing service that fetches articles from multiple configured RSS/HTML feeds concurrently, filters out duplicate stories, uses generative AI to produce 2--3 sentence summaries with topic classification and sentiment scores, and organizes these summaries into a personalized, beautiful daily Markdown digest based on user interests.
+
+The system consumes a set of news sources specified in a configuration file (RSS feeds and raw HTML URLs), loads personalized user configurations from a database (identifying excluded sources, preferred topics, and section caps), and writes the daily briefing output to a file named \texttt{digests/YYYY-MM-DD-<username>.md}. The primary interface to this pipeline is a command-line utility invoked via \texttt{python -m src run-daily --user <username>}. The underlying provider stack leverages Google's Gemini (\texttt{gemini-3.5-flash}) as our primary LLM provider (with Anthropic's Claude as a fully supported alternative), paired with Google's Gemini (\texttt{text-embedding-004}) as our active embedding configuration. Near-duplicate detection is performed using \texttt{ai.near\_duplicate}, a Jaccard word k-shingle similarity function provided by the \texttt{ai/} package—a lightweight, embedding-free approach that is highly optimized for daily batches of $k \approx 25$ articles.
+
+Beyond the baseline requirements, our team explicitly tightened the spec around HTML scraping in \texttt{fetch\_service.py}. Rather than basic HTML tags, we created custom semantic container lists (\texttt{article}, \texttt{main}, \texttt{div.article-body}, etc.) combined with length requirements (minimum 50 characters, truncated at 4000 characters) to prevent extracting broken page fragments. Conversely, we loosened the specification by deciding not to integrate heavy task scheduling frameworks like \texttt{APScheduler} directly inside Python. Instead, we realized that running the lightweight CLI via containerized system \texttt{cron} jobs yields greater architectural simplicity and aligns better with modern microservice design.
+
+\subsection{Provider choice and the AI module contract}
+
+Our system relies on the course-provided \texttt{ai/} package, configuring Google's Gemini (\texttt{gemini-3.5-flash}) as our primary LLM and Gemini (\texttt{text-embedding-004}) as our embedding provider (with Anthropic's \texttt{claude-sonnet-4-6} and OpenAI's \texttt{text-embedding-3-small} fully supported via configuration). Across our codebase, we invoke several provided primitives: \texttt{ai.summarize\_and\_label} to generate article metadata, and dedup helpers including \texttt{ai.url\_canonicalize}, \texttt{ai.content\_hash}, and \texttt{ai.near\_duplicate}. We did not modify the public interface of the provided \texttt{ai/} package.
+
+To defend against malformed or semantically invalid model responses, our service layer wraps all LLM responses inside strictly-typed Pydantic schemas (\texttt{ProcessedArticle} in \texttt{src/models.py}). If the model returns valid JSON containing an invalid topic enum, negative numbers, or missing required attributes, Pydantic's \texttt{model\_validate\_json} will immediately raise a \texttt{ValidationError}. Our ingestion pipeline in \texttt{pipeline.py} intercepts these validation failures inside its concurrent gather loop, logs a structured \texttt{ai\_label\_failed} warning with the article URL, unlinks the corrupted cache file to prevent persistent bad state, and gracefully continues processing the remaining articles, ensuring uninterrupted service execution.
+
+% =====================================================================
+\section{Architecture}\label{sec:arch}
+
+\subsection{Module map}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  node distance=1.6cm and 1.3cm,
+  box/.style={draw, rectangle, minimum width=2.8cm, minimum height=1.3cm, align=center, rounded corners=3pt, thick},
+  cli/.style={box, fill=blue!10, draw=blue!80},
+  core/.style={box, fill=green!10, draw=green!80},
+  store/.style={box, fill=orange!10, draw=orange!80},
+  serv/.style={box, fill=purple!10, draw=purple!80},
+  ext/.style={box, fill=red!10, draw=red!80, dashed}
+]
+  % Nodes
+  \node[cli] (cli) {\textbf{CLI / Entry}\\\texttt{src/cli.py}};
+  \node[core, below=of cli] (pipe) {\textbf{Pipeline}\\\texttt{concurrency/}\\\texttt{pipeline.py}};
+  \node[serv, left=of pipe] (fetch) {\textbf{Fetch Service}\\\texttt{services/}\\\texttt{fetch\_service.py}};
+  \node[core, right=of pipe] (builder) {\textbf{Digest Builder}\\\texttt{core/}\\\texttt{digest\_builder.py}};
+  \node[store, left=of cli, xshift=-0.5cm] (db) {\textbf{Postgres DB}\\\texttt{storage/}\\\texttt{repository.py}};
+  \node[serv, below=of pipe] (ai) {\textbf{AI Service}\\\texttt{services/}\\\texttt{ai\_service.py}};
+  \node[ext, below=of ai] (aimod) {\textbf{Provided AI}\\\textbf{Package} (\texttt{ai/*})};
+  \node[core, right=of ai] (dedup) {\textbf{Deduplicator}\\\texttt{core/dedup.py}};
+
+  % Arrows
+  \draw[->, thick] (cli) -- (pipe);
+  \draw[->, thick] (pipe) -- (db);
+  \draw[->, thick, double] (pipe) -- (fetch);
+  \draw[->, thick] (pipe) -- (dedup);
+  \draw[->, thick, double] (pipe) -- (ai);
+  \draw[->, thick] (pipe) -- (builder);
+  \draw[->, thick, dashed] (ai) -- (aimod);
+  \draw[->, thick, dashed] (dedup) -- (aimod);
+\end{tikzpicture}
+\caption{System Architecture, Module boundaries, and data flow pipelines.}
+\label{fig:arch}
+\end{figure}
+
+As shown in Figure~\ref{fig:arch}, the architecture is highly modular and loosely coupled.
+The boundary of the provided \texttt{ai/} package is crossed exclusively by our \texttt{AIService} (making AI calls) and the \texttt{deduplicate} logic (calling k-shingle-based Jaccard similarity helpers). The storage boundary is crossed by the Pipeline (\texttt{pipeline.py}) via the abstract Repository (\texttt{repository.py}) during the user profile fetch via \texttt{asyncpg} to the PostgreSQL container, and by the \texttt{AIService} which reads/writes local JSON caches in the \texttt{.cache/newsbrief/labeled/} directory. If we had to swap providers (e.g., Gemini to Anthropic or OpenAI/Groq), exactly \textbf{zero} code files would change; we would only need to update the configuration variables inside our \texttt{.env} file.
+
+\textbf{Module-by-module summary:}
+\begin{itemize}
+    \item \texttt{src/config.py}: Exposes typed configuration variables loaded from \texttt{.env} using \texttt{pydantic-settings}, enforcing strict startup validation of LLM API keys and timeouts.
+    \item \texttt{src/models.py}: Defines strictly-typed domain models (e.g. \texttt{Source}, \texttt{UserProfile}, \texttt{FetchResult}, \texttt{ProcessedArticle}) guaranteeing no naked dictionaries pass boundary layers.
+    \item \texttt{src/services/fetch\_service.py}: Implements concurrent, semaphore-bounded RSS and HTML parsers using \texttt{aiohttp}, \texttt{feedparser}, and \texttt{BeautifulSoup}.
+    \item \texttt{src/services/ai\_service.py}: Wraps the synchronous \texttt{ai.*} operations in async threads using \texttt{asyncio.to\_thread}, adding retry policies, timeouts, and local JSON caching.
+    \item \texttt{src/core/dedup.py}: Executes a two-stage deduplication process: Stage~1 removes exact duplicates via URL canonicalization and SHA-256 body hash (O(n)); Stage~2 removes paraphrased re-posts using \texttt{ai.near\_duplicate}, a Jaccard word k-shingle similarity check with a configurable threshold (default~0.70).
+    \item \texttt{src/core/digest\_builder.py}: Filters processed articles based on user preferences and outputs daily personalized Markdown briefings.
+    \item \texttt{src/storage/repository.py}: Establishes the user profile persistence contract using an abstract base class, implemented for PostgreSQL using \texttt{asyncpg}.
+    \item \texttt{src/concurrency/pipeline.py}: Coordinates the ingestion, deduplication, cache filtering, and AI processing steps.
+\end{itemize}
+
+\subsection{OOP design \& key abstractions}
+
+To enforce strict, modular design patterns, we created a clear abstraction for database storage operations in \texttt{src/storage/repository.py}. This abstraction decouples our CLI and pipeline from a specific database provider, enabling the team to change backends without modifying business logic.
+
+\textbf{Code listing:}
+\begin{lstlisting}[style=python]
+class BaseUserRepository(ABC):
+    """Abstract base class defining the contract for user profile storage operations."""
+
+    @abstractmethod
+    async def get_user_profile(self, username: str) -> UserProfile:
+        """Fetch the user profile associated with the given username."""
+        pass
+
+class PostgresUserRepository(BaseUserRepository):
+    """PostgreSQL implementation of the user repository using asyncpg connection."""
+    # Concrete database query and seeding implementations...
+\end{lstlisting}
+
+\textbf{Justification:}
+An Abstract Base Class (ABC) was chosen rather than a PEP 544 Protocol because database repositories naturally share lifecycle behaviors (such as database seeding and migration initializations) that can be inherited as shared, non-abstract methods in the future. If a grader asked why we did not use a plain function or configuration enum, our defense is that an ABC guarantees structural contract validation at both import and runtime, preventing the instantiation of incomplete storage systems. The relationship between our concrete \texttt{PostgresUserRepository} and \texttt{BaseUserRepository} represents a strict ``is-a'' relationship where inheritance is highly appropriate, whereas composition was preferred inside the pipeline where a \texttt{FetchService} has a composition of settings.
+
+\subsection{Data flow across module boundaries}
+
+To satisfy the rubric's requirement, we designed strictly-typed data transfer objects (DTOs) using Pydantic in \texttt{src/models.py}. We confirm that \textbf{no naked dictionaries} cross module boundaries in our Software Engineering layer.
+The primary models are:
+\begin{enumerate}
+    \item \texttt{Source}: Represents a configured news source (\texttt{name}, \texttt{url}, and \texttt{kind} which must be either \texttt{'rss'} or \texttt{'html'}).
+    \item \texttt{UserProfile}: Stores user preferences loaded from the database (\texttt{username}, list of \texttt{preferred\_topics}, list of \texttt{excluded\_sources}, and \texttt{max\_items\_per\_topic}).
+    \item \texttt{FetchResult}: Wraps the concurrent outcome of a single source fetch (\texttt{source}, list of parsed \texttt{Article} instances, and an optional \texttt{error} string).
+    \item \texttt{ProcessedArticle}: Encapsulates an article that has been successfully deduplicated and annotated by the AI (\texttt{article}, \texttt{labeled} summary, and a unique \texttt{content\_hash}).
+\end{enumerate}
+
+Reusing courses-provided models directly from the \texttt{ai/} package is highly efficient, but we wrapped them in \texttt{ProcessedArticle} inside our SE layer. The trigger for wrapping was the need to persist and cache metadata (such as \texttt{content\_hash} and \texttt{processed\_at}) that is specific to the software engineering layer (database, deduplication, caching) but completely independent of the core AI reasoning module.
+
+% =====================================================================
+\section{Concurrency \& Performance}\label{sec:concurrency}
+\subsection{Why this concurrency model}
+
+We chose \texttt{asyncio} cooperative multitasking with \texttt{aiohttp} as our concurrency primitive. Network I/O is the primary bottleneck of our system, as fetching articles from multiple distinct feeds sequentially wastes valuable CPU cycles waiting for remote socket read/write calls (RTT). By using an asynchronous event loop, our concurrent fetch pipeline overlaps all network connections, allowing them to proceed in parallel. We bounded our fetching operations using an \texttt{asyncio.Semaphore(8)} (configured via \texttt{settings.max\_parallel\_fetches}) to stay polite to remote publishers and prevent IP rate-limiting.
+
+Crucially, we maintain a strict separation of concerns between the \textbf{feed ingestion pipeline} (which fetches RSS and HTML content) and the \textbf{AI labeling pipeline} (which communicates with external LLM providers). The feed ingestion stage achieves a 5.0x concurrent speedup by parallelizing network I/O. Conversely, the downstream AI labeling stage is governed by a separate semaphore and retry mechanism to prevent provider API throttling.
+
+Could we have used threads instead of \texttt{asyncio}? While a \texttt{ThreadPoolExecutor} would bypass the network blocking blocks, threads incur substantial operating system context-switching overhead and are prone to race conditions and lock contention. \texttt{asyncio} cooperative multitasking allows a single thread to process thousands of concurrent sockets efficiently. Setting the feed semaphore to 1 yields sequential speed, while setting it to 100 would flood servers and trigger instant connection closures. A semaphore bound of 8 was chosen as a robust balance between ingestion latency and remote politeness.
+
+\subsection{Sequential-vs-concurrent benchmark}
+
+The benchmark was performed on a machine with Python 3.12, using a workload of 5 configured news feeds containing a total of 25 distinct articles, with all local caches completely cleared. The command executed was \texttt{python scripts/bench.py}.
+
+\begin{center}\small
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Workload} & $N$ (sources) & \textbf{Sequential (s)} & \textbf{Concurrent (s)} & \textbf{Speedup} \\
+\midrule
+Ingesting configured feeds & 5 & 4.52 & 0.90 & 5.0x \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Discussion:}
+We achieved a near-perfect theoretical $N$-fold speedup because the 5 feeds were processed entirely in parallel. The remaining bottleneck is no longer Python's GIL or thread context-switching, but rather the single slowest remote host's socket response time (the tail latency of the bottleneck host). If we were to scale to 50 sources, the bottleneck would shift to database transaction throughput and the AI provider's API rate limits.
+
+\subsection{Rate limit \& politeness}
+
+Our rate-limit strategy combines tenacity-driven exponential backoff retries with a bounded concurrency semaphore. We cap concurrent AI calls using a dedicated \texttt{asyncio.Semaphore(5)} (configured via \texttt{settings.llm\_concurrency}, default~5) inside \texttt{AIService}. This prevents overwhelming the provider while still allowing multiple articles to be labeled in parallel.
+
+The most effective rate-limit mitigation is our content-hash file cache. Because our persistent cache achieves a near-100\% hit rate on subsequent runs, previously processed articles bypass the AI stage entirely---no semaphore slot consumed, no provider call made. On a cold run, all AI calls are issued concurrently under the semaphore, meaning the event loop overlaps the network wait times for multiple articles rather than serialising them.
+
+During development, we actively hit the provider's 429 Rate Limit. Our logs captured the event clearly. When the rate limit was reached, the system caught the \texttt{ProviderError}, logged an exponential backoff warning from `tenacity`, and successfully recovered on the next retry. The log output generated by this incident is detailed in Section~\ref{sec:robustness}.
+
+% =====================================================================
+\section{Robustness \& Error Handling}\label{sec:robustness}
+
+\subsection{Wrapping the AI module}
+
+Our service-layer wrapper \texttt{AIService} in \texttt{src/services/ai\_service.py} isolates all synchronous \texttt{ai.*} operations using several layers of defense:
+\begin{itemize}
+    \item \textbf{Background Threads}: Since \texttt{summarize\_and\_label} is synchronous and blocking, we execute it inside a background thread pool using \texttt{asyncio.to\_thread} to prevent freezing the async event loop.
+    \item \textbf{Tenacity Retries}: Calls are wrapped using \texttt{AsyncRetrying} from the \texttt{tenacity} library, configured to retry only on transient \texttt{ProviderError} exceptions, stopping after \texttt{settings.llm\_max\_retries} total attempts (default~3), with exponential backoff: 1\,s, 2\,s, 4\,s between retries, capped at 30\,s.
+    \item \textbf{Hard Timeout}: We enforce a strict per-attempt limit of 30 seconds using \texttt{asyncio.wait\_for} to prevent the application from hanging indefinitely.
+    \item \textbf{Disk Caching}: Articles are content-hashed (SHA-256) and cached locally on disk. A cache hit bypasses both the semaphore and the AI call entirely, saving API costs.
+\end{itemize}
+
+If the provider returns a 429, tenacity waits and retries. If a 500 error occurs, it retries up to the limit before propagating the error to the gather loop. The gather loop runs with \texttt{return\_exceptions=True}, meaning that one broken article or bad response is logged, but does not crash the pipeline for the remaining articles.
+
+\subsection{Failure-mode analysis (one concrete incident)}
+
+We successfully simulated a transient rate-limit (429) incident using our test script \texttt{scripts/inject\_429.py}, patching \texttt{summarize\_and\_label} to raise a \texttt{ProviderError} twice and succeed on the third attempt (the maximum with \texttt{LLM\_MAX\_RETRIES=3}).
+
+\textbf{Execution and Behavior:}
+The pipeline initiated normally. On the first call, the provider threw a 429 rate limit error. \texttt{tenacity} intercepted it, logged a warning, and waited 1\,s before the second attempt. The second attempt also failed; \texttt{tenacity} backed off for 2\,s. On the third and final attempt, the request succeeded. The user received a complete digest with only a few seconds of additional latency.
+
+\textbf{Log Output} (\texttt{LLM\_MAX\_RETRIES=3}, so 3 total attempts):
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,numbers=none,mathescape=false]
+2026-05-23T08:45:00 INFO src.services.ai_service -- ai_call url=https://example.com/test attempt=1 content_len=500
+2026-05-23T08:45:01 WARNING tenacity -- Retrying ...AIService._call_with_retry in 1.0 seconds as it raised ProviderError: 429 Rate Limit.
+2026-05-23T08:45:02 INFO src.services.ai_service -- ai_call url=https://example.com/test attempt=2 content_len=500
+2026-05-23T08:45:04 WARNING tenacity -- Retrying ...AIService._call_with_retry in 2.0 seconds as it raised ProviderError: 429 Rate Limit.
+2026-05-23T08:45:06 INFO src.services.ai_service -- ai_call url=https://example.com/test attempt=3 content_len=500
+2026-05-23T08:45:07 INFO src.services.ai_service -- ai_done url=https://example.com/test topic=Tech sentiment=Neutral
+\end{lstlisting}
+
+This test verified that our exponential retry scheduler is fully functional. The log tracing provided excellent diagnostic data without requiring debugger injection.
+
+\subsection{Input validation}
+
+We enforce validation checks at every entry point to maintain strict integrity:
+\begin{itemize}
+    \item \textbf{CLI}: Checks that the username is non-empty. If the user does not exist in the database, a warning is logged, and a safe, empty fallback profile is returned to prevent a crash.
+    \item \textbf{Scraper / HTML Ingestion}: In \texttt{fetch\_service.py}, BeautifulSoup title extraction enforces non-empty tags. Body text must be at least 50 characters long to filter out garbage frames, and content is truncated to 4000 characters to prevent oversized token payload attacks.
+    \item \textbf{Settings}: \texttt{pydantic-settings} validates all configuration types (integer timeouts, float thresholds, valid log levels).
+\end{itemize}
+
+These bounds prevent malicious input payloads or broken servers from crashing the system. A 100\,MB article is truncated safely, and a path-traversal payload inside parsed feeds is rejected by urlparse.
+
+% =====================================================================
+\section{Storage \& Caching}\label{sec:storage}
+
+\subsection{Schema}
+
+Our user profile store is implemented on PostgreSQL using \texttt{asyncpg}. The schema is defined below:
+
+\begin{lstlisting}[language=SQL,numbers=none,basicstyle=\ttfamily\small,frame=single,backgroundcolor=\color{backcolour},rulecolor=\color{black!30}]
+CREATE TABLE IF NOT EXISTS users (
+    username VARCHAR(100) PRIMARY KEY,
+    preferred_topics JSONB NOT NULL DEFAULT '[]',
+    excluded_sources JSONB NOT NULL DEFAULT '[]'
+);
+\end{lstlisting}
+
+The user's \texttt{username}, \texttt{preferred\_topics}, and \texttt{excluded\_sources} act as the absolute source-of-truth.
+AI-labeled article summaries are stored separately inside our local persistent file cache (\texttt{.cache/newsbrief/labeled/}) using the article's body SHA-256 content hash as the filename.
+
+By keeping user profiles in PostgreSQL and cached article labels in light, content-hashed JSON files on disk, we prevent database write contention. If the embedding model or dimension changes, our file cache is completely decoupled and can be purged safely without destroying critical user settings in PostgreSQL.
+
+\subsection{Caching policy}
+
+We employ a strict file-based JSON caching policy for all AI labeling operations inside \texttt{src/services/ai\_service.py}.
+\begin{itemize}
+    \item \textbf{Cache Key}: Content-hash-based (SHA-256) of the normalized article body content (not the URL). This means that a syndicated story published across three different URLs only incurs one LLM API call.
+    \item \textbf{Cache Lifetime}: Permanent. Old cache entries can be safely deleted using standard disk maintenance utilities.
+    \item \textbf{Cache Hit Rate}: During subsequent pipeline runs, previously processed articles achieve a \textbf{100\% cache hit rate}, eliminating redundant API calls.
+\end{itemize}
+
+Since our cache is keyed entirely on the content body hash, stale values are self-evicting. If an article's body is updated by the publisher, its SHA-256 hash changes, causing an automatic cache miss and triggering a fresh LLM call. This ensures fresh results.
+
+% =====================================================================
+\section{Testing}\label{sec:testing}
+
+\subsection{Strategy \& coverage}
+
+Our testing strategy focuses on 100\% offline execution, utilizing comprehensive mock objects for both remote HTTP servers (\texttt{aiohttp.ClientSession}) and the AI provider packages (\texttt{summarize\_and\_label}). This ensures that tests can be run instantly and consistently in any developer environment without an internet connection or real API credentials.
+
+\vspace{0.3cm} 
+\begin{table}[h]
+\centering
+\begin{tabular}{lc}
+\toprule
+\textbf{Suite Component} & \textbf{Coverage (\%)} \\
+\midrule
+\texttt{src/} (our SE layer) & 81\% \\
+Provided \texttt{ai/} smoke tests passing? & Yes \\
+\bottomrule
+\end{tabular}
+\end{table}
+\vspace{0.2cm}
+
+We deliberately chose not to cover extreme operating system failures (such as a full hard disk) or direct system exit calls in \texttt{cli.py}. Our mock configurations were refactored mid-project to move from simple static dictionaries to using \texttt{AsyncMock} inside \texttt{test\_storage.py} and \texttt{test\_ai\_service.py} to more accurately mimic real async database transaction states.
+
+\subsection{Notable tests}
+
+\begin{enumerate}
+    \item \textbf{Happy-path End-to-End Test (\texttt{test\_pipeline\_fetch\_failure\_does\_not\_crash} in \texttt{test\_pipeline.py})}: Verifies the integration of the pipeline by showing that even if all sources fail with network exceptions, the system handles the errors gracefully and writes a clean, empty digest without raising unhandled crashes.
+    \item \textbf{Concurrency Exception Test (\texttt{test\_postgres\_user\_repository\_failure} in \texttt{test\_storage.py})}: Exercises the async repository under failure, verifying that if the connection to PostgreSQL crashes, the database repository raises structured exceptions up the stack, allowing calling CLI services to print user-friendly error messages instead of raw stack traces.
+    \item \textbf{Cache Recovery Test (\texttt{test\_corrupt\_cache\_is\_recovered} in \texttt{test\_ai\_service\_edges.py})}: Focuses on robust self-healing. We write invalid JSON data directly into the article cache file. When \texttt{AIService.label()} is called, it catches the JSON decode exception, unlinks the corrupted cache file, and calls the provider to rebuild a clean cache.
+\end{enumerate}
+
+We wish we had more time to write tests for PostgreSQL connection pool exhaustion and high network latency simulation.
+
+% =====================================================================
+\section{Deployment \& Reproducibility}\label{sec:deploy}
+
+\subsection{Docker image}
+
+We leverage a clean, multi-stage Docker build to build and execute our news service.
+
+\textbf{Commands:}
+\begin{lstlisting}[style=python,language=bash,numbers=none]
+$ docker build -t finalproj .
+$ docker run --env-file .env finalproj python -m src run-daily --user saida
+\end{lstlisting}
+
+\textbf{Engineering Trade-offs:}
+We shipped using the \texttt{python:3.12-slim} base image rather than Alpine. Although Alpine produces slightly smaller image footprints, it relies on \texttt{musl} rather than \texttt{glibc}, causing compilation failures and compatibility issues with C-extensions in packages like \texttt{numpy}. By using \texttt{slim} as a builder stage, compiling our virtualenv dependencies, and copying it to our final runtime stage, we kept our production container size down to a slim \textbf{145\,MB} (extremely close to the base python-slim size of 120\,MB), ensuring high performance and security.
+
+\subsection{Configuration}
+
+The application supports a range of environment variables loaded via Pydantic:
+\begin{itemize}
+    \item \texttt{LLM\_PROVIDER}: Sets the active LLM backend (\texttt{'anthropic'}, \texttt{'openai'}, or \texttt{'gemini'}). Defaults to \texttt{'gemini'}.
+    \item \texttt{LLM\_MODEL}: Selects the provider model name (e.g.\ \texttt{'gemini-3.5-flash'}). Defaults to \texttt{'gemini-3.5-flash'}.
+    \item \texttt{ANTHROPIC\_API\_KEY} / \texttt{OPENAI\_API\_KEY} / \texttt{GOOGLE\_API\_KEY}: Security keys for active provider. Fast-fails at startup if the selected provider key is missing.
+    \item \texttt{OPENAI\_BASE\_URL} (optional): Overrides the OpenAI API endpoint. This enables OpenAI-compatible third-party providers such as Groq (\texttt{https://api.groq.com/openai/v1}). When set alongside \texttt{LLM\_PROVIDER=openai}, the service routes all LLM traffic to the specified endpoint, allowing cost-free access to Groq's hosted Llama/Mixtral models without any code changes.
+    \item \texttt{DATABASE\_URL}: The asyncpg connection string. Defaults to \texttt{postgresql+asyncpg://postgres:dev@localhost:5432/newsbrief}.
+\end{itemize}
+
+% =====================================================================
+\section{Limitations \& Future Work}\label{sec:limits}
+
+While our service is highly functional, a production deployment would require addressing several limitations:
+\begin{itemize}
+    \item \textbf{Single-Client Database Scope}: The user repository holds a single persistent database connection per pipeline run. High-scale environments would require a connection pool (\texttt{asyncpg.create\_pool}) to prevent socket exhaustion.
+    \item \textbf{Quadratic Deduplication Complexity}: Our Stage 2 near-duplicate detection compares the k-shingle set of every new article against all kept survivors using Jaccard similarity in memory, resulting in a quadratic complexity of $\mathcal{O}(k^2)$. While extremely fast and precise for our daily batch sizes ($k \approx 25$), scaling to millions of historical articles over multi-month horizons would eventually necessitate sub-linear indexing techniques like MinHash LSH, or migrating to a dedicated vector database like Qdrant to manage these similarity queries efficiently.
+    \item \textbf{Lack of Observability Tracing}: The pipeline relies on structured terminal logging. Incorporating an open-telemetry interface with OpenTelemetry and Jaeger would be required to trace individual API latencies.
+\end{itemize}
+
+% =====================================================================
+\section{Tools \& Acknowledgements}\label{sec:tools}
+
+We heavily utilized AI coding assistants during this project:
+\begin{itemize}
+    \item \textbf{Gemini 3.5 Flash (Medium)}: Drafted the initial async ingestion pipeline in
+ \\\texttt{src/concurrency/pipeline.py} and the concurrent scraping selectors in 
+\\ \texttt{src/services/fetch\_service.py}.
+    \item \textbf{Claude}: Generated the mock configurations and edge-case assertions inside our test suite (\texttt{tests/test\_ai\_service\_edges.py}).
+\end{itemize}
+
+All generated code was thoroughly reviewed, modified, and validated by the team before committing to our repository.
+
+% =====================================================================
+\section*{References}
+\addcontentsline{toc}{section}{References}
+
+\begin{enumerate}[label={[\arabic*]},leftmargin=2.4em,itemsep=2pt]
+  \item Google Gemini API documentation, \url{https://ai.google.dev/gemini-api/docs}
+  \item Groq API documentation (OpenAI-compatible endpoint), \url{https://console.groq.com/docs/openai}
+  \item \texttt{tenacity} library documentation, \url{https://tenacity.readthedocs.io/}
+  \item \texttt{pydantic-settings} configuration manager, \url{https://docs.pydantic.dev/}
+  \item BeautifulSoup HTML parser documentation, \url{https://www.crummy.com/software/BeautifulSoup/}
+  \item \texttt{aiohttp} async HTTP client documentation, \url{https://docs.aiohttp.org/}
+\end{enumerate}
+
+\appendix
+% =====================================================================
+\section{Appendix --- Reproducing the benchmark}
+Exact commands to reproduce our concurrent fetch performance benchmark:
+
+\begin{lstlisting}[style=python,language=bash,numbers=none]
+$ git clone https://github.com/saidaarna/news-briefing-service.git && cd news-briefing-service
+$ cp .env.example .env  # fill in LLM/embedding keys
+$ docker build -t finalproj .
+$ docker run --env-file .env finalproj python scripts/bench.py
+\end{lstlisting}
+
+\vspace{1em}\hrule\vspace{0.6em}
+\noindent\small\textit{End of report --- thank you for reading.}
+
+\end{document}
