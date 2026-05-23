@@ -6,10 +6,14 @@ Run via:
 """
 from __future__ import annotations
 
-import json
-import re
+import sys
 from pathlib import Path
 
+# Ensure project root is on sys.path when launched via `streamlit run src/app.py`
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
+import json
+import re
 import streamlit as st
 
 # ── Page config ──────────────────────────────────────────────────────────────
