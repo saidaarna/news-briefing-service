@@ -15,7 +15,8 @@
       "Politics"
     ],
     "excluded_sources": [
-      "tabloid_news"
+      "APA News Agency (AZ)",
+      "Milli.az (AZ)"
     ],
     "max_items_per_topic": 4
   },
@@ -26,7 +27,7 @@
       "Business"
     ],
     "excluded_sources": [
-      "clickbait.com"
+      "rss.cnn.com"
     ],
     "max_items_per_topic": 5
   },
@@ -37,7 +38,7 @@
       "Politics"
     ],
     "excluded_sources": [
-      "low_quality_source"
+      "Trend News Agency (AZ)"
     ],
     "max_items_per_topic": 4
   }

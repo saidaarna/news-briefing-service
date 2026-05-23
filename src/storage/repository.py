@@ -42,11 +42,11 @@ class PostgresUserRepository(BaseUserRepository):
             seed_query = """
             INSERT INTO users (username, preferred_topics, excluded_sources)
             VALUES
-                ('saida',  '["Tech", "Science"]',          '[]'),
-                ('laman',  '["Business", "Politics"]',     '["tabloid_news"]'),
-                ('nazrin', '["Tech", "Business"]',         '["clickbait.com"]'),
-                ('nigar',  '["Science", "Politics"]',      '["low_quality_source"]'),
-                ('khagani','["Tech", "Science"]',          '["FakeNews.com"]')
+                ('saida',  '["Tech", "Science"]',        '[]'),
+                ('laman',  '["Business", "Politics"]',   '["APA News Agency (AZ)", "Milli.az (AZ)"]'),
+                ('nazrin', '["Tech", "Business"]',        '["rss.cnn.com"]'),
+                ('nigar',  '["Science", "Politics"]',    '["Trend News Agency (AZ)"]'),
+                ('khagani','["Tech", "Science"]',         '[]')
             ON CONFLICT (username) DO NOTHING;
             """
             await self.db_connection.execute(seed_query)
