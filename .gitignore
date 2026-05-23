@@ -11,18 +11,30 @@ htmlcov/
 
 # Project
 .env
+.env.local
 *.db
 *.sqlite3
 *.log
+digests/*
+!digests/.gitkeep
+pgdata/
+postgres_data/
 
 # OS / editor
 .DS_Store
 .idea/
 .vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
 
 # Build artefacts
 dist/
 build/
 *.egg-info/
 .cache/
-digests/
+
+# Azerbaijani Pipeline Document (user choice)
+PIPELINE_AZ.md

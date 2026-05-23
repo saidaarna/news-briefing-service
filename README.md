@@ -1,96 +1,170 @@
-# AI Engineering — Software Engineering Final Project (v2)
+# AI News Briefing Service
 
-**AI Academy, National AI Center · Spring 2026**
+**AI Academy · National AI Center · Spring 2026 — Topic 3**
 
-This is the distributable package for the Software Engineering final project. It contains everything students need: the project brief, the topic codebases (with their provided AI modules), report and slide templates, and documentation.
-
-**Released:** May 11, 2026
-**Due:** **May 23, 2026 at 23:59 (UTC+4)**
+A scheduled service that fetches articles from multiple news sources concurrently, deduplicates near-identical stories, categorizes them by topic, and produces a personalized daily Markdown digest for a given user.
 
 ---
 
-## What to read first
+## Team
 
-1. **`SOFTWARE_PROJECT.pdf`** — the authoritative project description, requirements, rubric, deadlines. Start here.
-2. **`docs/TIMELINE.md`** — recommended 12-day milestone schedule.
-3. Your chosen topic's **`TOPIC.md`** — what the provided AI module does and what you build around it.
-4. **`docs/COMMON_PITFALLS.md`** — every mistake previous students have made. Read before Day 9.
+| Member | Contribution |
+|---|---|
+| Saida (arabovasaida@gmail.com) | Fetch service, pipeline orchestration, config, CLI, Docker |
+| Leman Mirzeyeva | Digest builder, repository layer, core unit tests |
+| Nigar Rustamova | AI service (retry/cache/dedup), filter, dedup wiring tests |
+| Nazrin | CLI skeleton, pipeline integration |
 
-## What's where
+---
 
-```
-AIENG_FinalProject_v2/
-│
-├── SOFTWARE_PROJECT.pdf         ← the project description (start here; authoritative)
-├── SOFTWARE_PROJECT.tex         ← LaTeX source for the brief
-├── README.md                    ← this file
-│
-├── templates/                   ← templates you fill in for submission
-│   ├── REPORT_TEMPLATE.tex      → produces report/report.pdf
-│   ├── REPORT_TEMPLATE.pdf      ← compiled preview
-│   ├── SLIDES_TEMPLATE.tex      → produces your defense slides (Beamer)
-│   ├── SLIDES_TEMPLATE.pdf      ← compiled preview
-│   ├── CONTRIBUTION_STATEMENT.md
-│   ├── STUDENT_README_TEMPLATE.md   ← model README for your repo
-│   ├── Dockerfile.template      ← starting-point Dockerfile
-│   └── pull_request_template.md ← put at .github/ in your repo
-│
-├── docs/                        ← guidance, not graded directly but read carefully
-│   ├── TIMELINE.md              ← 12-day milestone schedule
-│   ├── GIT_WORKFLOW.md          ← branch model, PR process, tagging
-│   ├── COMMON_PITFALLS.md       ← what previous teams got wrong
-│   └── ADVANCED_BONUSES.md      ← +10 bonus points for strong teams
-│
-├── topic-1-lost-and-found/      ← AI module + sample data + smoke tests
-├── topic-2-food-analyzer/       ← (pick exactly ONE of the four topics)
-├── topic-3-news-briefing/
-└── topic-4-research-assistant/
-```
+## Quick Start
 
-## What you receive
-
-For each of the four topics, the course provides a runnable, provider-agnostic `ai/` Python package (talks to Claude / GPT-4o / Gemini), sample data, a `demo_ai.py` that exercises it end-to-end, and offline smoke tests. **You do not build the AI side.** You build the software-engineering wrapping around it: config, storage, concurrency, retries, validation, logging, CLI, HTTP API (where required), testing, Docker, README, and the final report.
-
-## What you submit on May 23
-
-The authoritative brief says the headline submission is **one ZIP archive** due before **May 23, 2026 at 23:59 (UTC+4)** containing:
-
-1. **Source code**.
-2. **Compiled report** (`report/report.pdf`) using `templates/REPORT_TEMPLATE.tex`.
-3. **Presentation deck** for the oral defense, using `templates/SLIDES_TEMPLATE.tex`.
-
-Per `SOFTWARE_PROJECT.pdf` §7 and §10, the report/email must also include the GitHub repository URL and final tag `v1.0-final`; the signed contribution statement is submitted with the final package.
-
-## Verify the provided AI module works
-
-Before you write a single line of SE code, every team member should be able to run:
+### 1. Clone and install
 
 ```bash
-cd topic-N-<name>/
-python data/_make_samples.py            # if the topic uses generated samples
-python demo_ai.py --offline             # runs end-to-end without API keys
-pytest tests/test_ai_smoke.py -v        # provided contract tests, must pass
+git clone https://github.com/saidaarna/news-briefing-service.git
+cd news-briefing-service
+python -m venv venv
+# Windows:
+venv\Scripts\activate
+# Linux/macOS:
+source venv/bin/activate
+pip install -r requirements.txt -r requirements-ai.txt
 ```
 
-If any of these fail on your machine, fix the environment before continuing.
+### 2. Configure environment
 
-## Quick rules
+```bash
+cp .env.example .env
+# Edit .env and fill in your API keys
+```
 
-- **Do not** edit any file under `ai/`. The smoke tests are a contract; they must keep passing.
-- **Do not** commit real API keys. Use `.env`; `.env` is in `.gitignore`; `.env.example` lists keys with empty values.
-- **Do not** modify the public interface of the AI module — automatic deduction.
-- **Do** read the **`SOFTWARE_PROJECT.pdf`** end-to-end before the kickoff meeting. The rubric is non-negotiable.
-- **Do** use the timeline in `docs/TIMELINE.md` to plan.
-- **Do** disclose AI-assistant use (Cursor / Claude / Copilot / etc.) in the report.
+### 3. Run the offline demo (no API keys needed)
 
-## Grading summary
+```bash
+python demo_ai.py --offline
+```
 
-100 points: **Code 60% · Report 25% · Presentation 15%.** Up to **+10 bonus points** for advanced features (`docs/ADVANCED_BONUSES.md`). Automatic deductions for hard-coded keys, broken Docker, network-dependent tests, severe commit imbalance, and modifying `ai/`.
+### 4. Run the full daily pipeline
 
-Full rubric in **`SOFTWARE_PROJECT.pdf`** §8.
+```bash
+python -m src run-daily --user saida
+```
+
+This produces a digest at `digests/YYYY-MM-DD-saida.md`.
 
 ---
 
-**Questions?** Open an issue against the course-wide repo or email the instructor. Do not delay on a blocker.
+## Environment Variables
 
-Good luck. Build something you would actually ship.
+All configuration is read from `.env`. See `.env.example` for the full list.
+
+| Variable | Required | Default | Description |
+|---|---|---|---|
+| `LLM_PROVIDER` | yes | `anthropic` | `anthropic` \| `openai` \| `gemini` |
+| `LLM_MODEL` | yes | `claude-sonnet-4-6` | Provider-specific model ID |
+| `ANTHROPIC_API_KEY` | if provider=anthropic | — | Anthropic API key |
+| `OPENAI_API_KEY` | if provider=openai or embedding_provider=openai | — | OpenAI API key |
+| `GOOGLE_API_KEY` | if provider=gemini | — | Google API key |
+| `EMBEDDING_PROVIDER` | yes | `openai` | `openai` \| `gemini` |
+| `EMBEDDING_MODEL` | yes | `text-embedding-3-small` | Embedding model ID |
+| `DATABASE_URL` | yes | `postgresql+asyncpg://postgres:dev@localhost:5432/newsbrief` | asyncpg connection string |
+| `FETCH_TIMEOUT_SECONDS` | no | `15` | Per-source HTTP timeout |
+| `MAX_PARALLEL_FETCHES` | no | `8` | Semaphore bound for fetch concurrency |
+| `DEDUP_NEAR_DUPLICATE_THRESHOLD` | no | `0.70` | Jaccard similarity cutoff |
+| `AI_SEMAPHORE_LIMIT` | no | `5` | Max concurrent AI calls |
+| `LLM_MAX_RETRIES` | no | `3` | Max retry attempts per AI call |
+| `LLM_TIMEOUT_SECONDS` | no | `30.0` | Hard timeout per AI call |
+| `LOG_LEVEL` | no | `INFO` | `DEBUG` \| `INFO` \| `WARNING` \| `ERROR` |
+
+---
+
+## How to Test
+
+```bash
+# Run all tests (offline, no network required)
+python -m pytest tests/ -v
+
+# With coverage report
+python -m pytest tests/ --cov=src --cov-report=term-missing
+
+# Run just the AI smoke tests (must always pass)
+python -m pytest tests/test_ai_smoke.py -v
+```
+
+**Coverage:** 81% (target ≥60%)
+
+---
+
+## Parallel vs. Sequential Benchmark
+
+Fetch service uses `asyncio.gather` bounded by a `Semaphore(8)` to fetch all sources concurrently.
+
+| Mode | Sources | Time |
+|---|---|---|
+| Sequential (one at a time) | 6 | ~18–22 s |
+| Concurrent (`asyncio.gather + Semaphore(8)`) | 6 | ~3–5 s |
+| **Speedup** | | **~5×** |
+
+To reproduce the benchmark yourself:
+
+```bash
+python scripts/bench.py
+```
+
+This script times sequential vs. concurrent fetch over the configured sources and prints the results.
+
+---
+
+## Docker
+
+```bash
+# Build the image
+docker build -t news-briefing-service .
+
+# Run with environment variables
+docker run --env-file .env news-briefing-service
+```
+
+The container runs `python -m src run-daily --user saida` by default.
+
+To override the user:
+
+```bash
+docker run --env-file .env news-briefing-service python -m src run-daily --user khagani
+```
+
+---
+
+## Architecture
+
+```
+src/
+├── config.py              # pydantic-settings, typed env config
+├── models.py              # SE-layer Pydantic models (Source, UserProfile, …)
+├── cli.py                 # argparse CLI entry point
+├── services/
+│   ├── ai_service.py      # AIService: cache + semaphore + retry around ai.*
+│   └── fetch_service.py   # FetchService: async aiohttp + RSS/HTML parsing
+├── core/
+│   ├── dedup.py           # Two-stage dedup: URL/hash → near_duplicate
+│   ├── digest_builder.py  # Markdown digest generation
+│   ├── caching.py         # File-based content cache
+│   └── filter.py          # User preference filtering
+├── concurrency/
+│   └── pipeline.py        # Orchestrates fetch → dedup → AI → digest
+└── storage/
+    └── repository.py      # PostgreSQL user profile repository
+```
+
+**AI module boundary:** all calls to the LLM go through `AIService.label()` — never directly to `ai.*` from business logic.
+
+---
+
+## Key Design Decisions
+
+- **Two-stage dedup:** cheap URL canonicalization + SHA-256 hash runs first (eliminates 50–80% of duplicates). Only survivors go through Jaccard near-duplicate check (threshold=0.70, configurable).
+- **Cache by content hash:** re-running the digest on the same article never re-calls the LLM.
+- **Semaphore-bounded AI calls:** `AI_SEMAPHORE_LIMIT` (default 5) prevents provider 429 errors.
+- **Graceful degradation:** a failed source returns a `FetchResult(error=...)` — the pipeline continues with the remaining sources.
+- **Provider-agnostic:** `LLM_PROVIDER` switches between Anthropic, OpenAI, and Gemini with no code change.

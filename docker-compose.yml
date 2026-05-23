@@ -1,0 +1,39 @@
+
+
+services:
+  app:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://newsbrief:newsbrief_pass@db:5432/newsbrief
+      - LLM_PROVIDER=openai
+      - LLM_MODEL=llama-3.1-8b-instant
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_BASE_URL=https://api.groq.com/openai/v1
+      - EMBEDDING_PROVIDER=${EMBEDDING_PROVIDER:-gemini}
+      - EMBEDDING_MODEL=${EMBEDDING_MODEL:-text-embedding-004}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
+    volumes:
+      - ./digests:/app/digests
+      - ./.cache:/app/.cache
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=newsbrief
+      - POSTGRES_PASSWORD=newsbrief_pass
+      - POSTGRES_DB=newsbrief
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U newsbrief -d newsbrief"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:

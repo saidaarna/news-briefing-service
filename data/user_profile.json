@@ -1,6 +1,45 @@
-{
-  "user": "khagani",
-  "preferred_topics": ["Tech", "Science", "World"],
-  "excluded_sources": ["sponsored.example.com"],
-  "max_items_per_topic": 3
-}
+[
+  {
+    "username": "saida",
+    "preferred_topics": [
+      "Tech",
+      "Science"
+    ],
+    "excluded_sources": [],
+    "max_items_per_topic": 5
+  },
+  {
+    "username": "laman",
+    "preferred_topics": [
+      "Business",
+      "Politics"
+    ],
+    "excluded_sources": [
+      "APA News Agency (AZ)",
+      "Milli.az (AZ)"
+    ],
+    "max_items_per_topic": 4
+  },
+  {
+    "username": "nazrin",
+    "preferred_topics": [
+      "Tech",
+      "Business"
+    ],
+    "excluded_sources": [
+      "rss.cnn.com"
+    ],
+    "max_items_per_topic": 5
+  },
+  {
+    "username": "nigar",
+    "preferred_topics": [
+      "Science",
+      "Politics"
+    ],
+    "excluded_sources": [
+      "Trend News Agency (AZ)"
+    ],
+    "max_items_per_topic": 4
+  }
+]

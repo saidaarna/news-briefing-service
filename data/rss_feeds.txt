@@ -1,7 +1,24 @@
-# Sample RSS feeds. One URL per line; lines starting with '#' are ignored.
-# These are well-known public feeds. For real testing you may use any RSS feed.
+# Configure news sources here. Supports both standard RSS URLs and the format:
+# `url | kind | name` (where kind is either 'rss' or 'html')
+
+# --- Original English Sources ---
 http://feeds.bbci.co.uk/news/rss.xml
 http://rss.cnn.com/rss/edition.rss
 https://www.theguardian.com/world/rss
 https://feeds.npr.org/1001/rss.xml
 https://feeds.arstechnica.com/arstechnica/index/
+
+# --- Popular Azerbaijani Sources (RSS) ---
+https://azertag.az/rss | rss | AZERTAC (AZ)
+https://az.trend.az/feeds/index.rss | rss | Trend News Agency (AZ)
+https://apa.az/rss | rss | APA News Agency (AZ)
+
+# --- Popular Azerbaijani Sources (HTML Scrape) ---
+# Note: Satisfies the requirement: "At least one source must be direct-scraped HTML"
+https://oxu.az | html | Oxu.az (AZ)
+https://news.milli.az | html | Milli.az (AZ)
+https://report.az/son-xeberler | html | Report.az (AZ)
+
+# --- English HTML Scrape ---
+https://news.ycombinator.com | html | HackerNews (EN)
+
