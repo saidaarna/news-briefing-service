@@ -24,3 +24,5 @@ htmlcov/
 dist/
 build/
 *.egg-info/
+.cache/
+digests/
